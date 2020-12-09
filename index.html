@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head lang="cn">
+    <meta charset="UTF-8">
+    <title>微信六区-韩厶厶</title>
+    <style>
+        .js-demo {
+            width: 65vw;
+            margin: 0 auto;
+            padding-top: 6vw;
+            font-size: 5vw;
+        }
+
+        select {
+            margin-right: 5vw;
+            font-size: 3vw;
+        }
+    </style>
+</head>
+<body>
+
+<div class="js-demo">
+
+    菜系：
+    <select id="province"></select><br>
+
+    菜名：
+    <select id="city"></select><br>
+    鱼鳞单价:<input type="text" name="" value="240"  id="price" style="width:10vw; font-size: 3vw">
+
+    <div id="county" style="margin-top: 3vw;font-size: 5vw"></div>
+    <div id="prices" style="margin-top: 3vw;font-size: 5vw"></div>
+
+</div>
+
+<script>
+    // ===== ===== ===== 获取select元素 ===== ===== =====
+    // 获取下拉表单
+    var select_province = document.getElementById('province');
+    var select_city = document.getElementById('city');
+    var select_county = document.getElementById('county');
+    var select_price = document.getElementById('prices');
+
+
+    // ===== ===== ===== 准备三级联动的数据 ===== ===== =====
+
+    var arr_province = [
+
+        { id: 110000, name: '秦川菜系' },
+        { id: 120000, name: '东越菜系' },
+        { id: 130000, name: '巴蜀菜系' },
+        { id: 140000, name: '江南菜系' },
+        { id: 220000, name: '燕云菜系' },
+        { id: 150000, name: '荆湖菜系' },
+        { id: 160000, name: '通用菜系' },
+        { id: 170000, name: '开封菜系' },
+        { id: 180000, name: '移花菜系' },
+        { id: 190000, name: '徐海菜系' },
+        { id: 200000, name: '云滇菜系' },
+        { id: 210000, name: '襄州菜系' },
+    ];
+
+
+    var arr_city = [
+  
+        { id: 110001, name: '葫芦鸡', province_id: 110000 },
+        { id: 110002, name: '山药粥', province_id: 110000 },
+        { id: 110003, name: '水煮冰鱼', province_id: 110000 },
+        { id: 110004, name: '萝卜烧排骨', province_id: 110000 },
+        { id: 110005, name: '奶汤锅子鱼', province_id: 110000 },
+        { id: 110006, name: '雪莲酥饼', province_id: 110000 },
+        { id: 110007, name: '雪莲炖甲鱼', province_id: 110000 },
+        { id: 110008, name: '腊汁肉夹馍', province_id: 110000 },
+        { id: 110009, name: '羊肉泡沫', province_id: 110000 },
+        { id: 120001, name: '海鲜面', province_id: 120000 },
+        { id: 120002, name: '鲫鱼豆腐汤', province_id: 120000 },
+        { id: 120003, name: '河豚玉脍', province_id: 120000 },
+        { id: 120004, name: '白雪鸡', province_id: 120000 },
+        { id: 120005, name: '香芋扣肉', province_id: 120000 },
+        { id: 120006, name: '鱼羊双鲜', province_id: 120000 },
+        { id: 120007, name: '清蒸鲈鱼', province_id: 120000 },
+        { id: 120008, name: '荷花血鸭', province_id: 120000 },
+        { id: 130001, name: '水煮鱼', province_id: 130000 },
+        { id: 130002, name: '麻婆豆腐', province_id: 130000 },
+        { id: 130003, name: '口水鸡', province_id: 130000 },
+        { id: 130004, name: '鱼香肉丝', province_id: 130000 },
+        { id: 130005, name: '回锅肉', province_id: 130000 },
+        { id: 130006, name: '麻椒鲜笋', province_id: 130000 },
+        { id: 130007, name: '豆瓣青鱼', province_id: 130000 },
+        { id: 130008, name: '夫妻肺片', province_id: 130000 },
+        { id: 130009, name: '水煮肉片', province_id: 130000 },
+        { id: 140001, name: '三鲜炒饭', province_id: 140000 },
+        { id: 140002, name: '清蒸白鱼', province_id: 140000 },
+        { id: 140003, name: '江南青团', province_id: 140000 },
+        { id: 140004, name: '醉蟹', province_id: 140000 },
+        { id: 140005, name: '东坡肉', province_id: 140000 },
+        { id: 140006, name: '火腿蒸甲鱼', province_id: 140000 },
+        { id: 140007, name: '盐水鸭', province_id: 140000 },
+        { id: 140008, name: '松鼠鳜鱼', province_id: 140000 },
+        { id: 140009, name: '霸王别姬', province_id: 140000 },
+        { id: 1400010, name: '苏式糕点', province_id: 140000 },
+        { id: 1400011, name: '四腮鲈鱼汤', province_id: 140000 },
+        { id: 1400012, name: '龙井虾仁', province_id: 140000 },
+        { id: 1400013, name: '茶香鸡', province_id: 140000 },
+        { id: 1400014, name: '雪霞羹', province_id: 140000 },
+        { id: 1400015, name: '大汤黄鱼', province_id: 140000 },
+        { id: 150001, name: '小炒肉', province_id: 150000 },
+        { id: 150002, name: '一碗香', province_id: 150000 },
+        { id: 150003, name: '剁椒鱼头', province_id: 150000 },
+        { id: 150004, name: '百鸟朝凤', province_id: 150000 },
+        { id: 150005, name: '花菇无黄蛋', province_id: 150000 },
+        { id: 150006, name: '小炒黄牛肉', province_id: 150000 },
+        { id: 150007, name: '叫花鸡', province_id: 150000 },
+        { id: 150008, name: '雷公鸭', province_id: 150000 },
+        { id: 150009, name: '清蒸鲥鱼', province_id: 150000 },
+        { id: 160001, name: '柴胡姜桂汤', province_id: 160000 },
+        { id: 160002, name: '清炒时蔬', province_id: 160000 },
+        { id: 160003, name: '菜包子', province_id: 160000 },
+        { id: 160004, name: '肉包子', province_id: 160000 },
+        { id: 160005, name: '饺子', province_id: 160000 },
+        { id: 160006, name: '蛋炒饭', province_id: 160000 },
+        { id: 160007, name: '清蒸螃蟹', province_id: 160000 },
+        { id: 160008, name: '麻辣小龙虾', province_id: 160000 },
+        { id: 170001, name: '红烧鲫鱼', province_id: 170000 },
+        { id: 170002, name: '大葱烧海参', province_id: 170000 },
+        { id: 170003, name: '汴京烤鸭', province_id: 170000 },
+        { id: 170004, name: '红烧黄河鲤', province_id: 170000 },
+        { id: 170005, name: '梅花汤饼', province_id: 170000 },
+        { id: 170006, name: '胡辣汤', province_id: 170000 },
+        { id: 170007, name: '红烧牛肉面', province_id: 170000 },
+        { id: 170008, name: '花生糕', province_id: 170000 },
+        { id: 180001, name: '炖鱼汤', province_id: 180000 },
+        { id: 180002, name: '羊肉煲', province_id: 180000 },
+        { id: 180003, name: '鲷鱼刺身', province_id: 180000 },
+        { id: 180004, name: '佛跳墙', province_id: 180000 },
+        { id: 180005, name: '清汤鲍鱼', province_id: 180000 },
+        { id: 180006, name: '小炒鲍鱼', province_id: 180000 },
+        { id: 180007, name: '凉拌明玉子', province_id: 180000 },
+        { id: 190001, name: '大盘鸡', province_id: 190000 },
+        { id: 190002, name: '葱爆羊肉', province_id: 190000 },
+        { id: 190003, name: '手抓饭', province_id: 190000 },
+        { id: 190004, name: '酿皮', province_id: 190000 },
+        { id: 190005, name: '蜜汁羊腿', province_id: 190000 },
+        { id: 190006, name: '馕包肉', province_id: 190000 },
+        { id: 200001, name: '圆子鸡', province_id: 200000 },
+        { id: 200002, name: '竹笋豆腐汤', province_id: 200000 },
+        { id: 200003, name: '竹笋焖肉', province_id: 200000 },
+        { id: 200004, name: '山官牛头', province_id: 200000 },
+        { id: 200005, name: '爆炒见手青', province_id: 200000 },
+        { id: 200006, name: '酥炸见手青', province_id: 200000 },
+        { id: 200007, name: '杜鹃醉鱼', province_id: 200000 },
+        { id: 210001, name: '糯米丸子', province_id: 210000 },
+        { id: 210002, name: '滋粑', province_id: 210000 },
+        { id: 210003, name: '煿金煮玉', province_id: 210000 },
+        { id: 210004, name: '芋艿排骨汤', province_id: 210000 },
+        { id: 210005, name: '荆沙甲鱼', province_id: 210000 },
+        { id: 210006, name: '芋儿鸡', province_id: 210000 },
+        { id: 210007, name: '开屏武昌鱼', province_id: 210000 },
+        { id: 210008, name: '粉蒸鮰鱼', province_id: 210000 },
+        { id: 210009, name: '太极芋泥', province_id: 210000 },
+        { id: 220001, name: '烤鱼', province_id: 220000 },
+        { id: 220002, name: '烤肉串', province_id: 220000 },
+        { id: 220003, name: '炖肉', province_id: 220000 },
+        { id: 220004, name: '干烧鲤鱼', province_id: 220000 },
+        { id: 220005, name: '手抓羊肉', province_id: 220000 },
+        { id: 220006, name: '驼峰炙', province_id: 220000 }
+    ];
+
+
+    var arr_county = [
+        { id: 110001, name: '鸡肉+香料+调料+辅料 ',num:75, city_id: 110001 },
+        { id: 110002, name: '大米+山药+调料+淀粉  ',num:125, city_id: 110002 }, 
+        { id: 110003, name: '冰鱼+辣椒+料酒+调料  <br>冰鱼→秦川鱼王<br>钓鱼等级+2',num:105, city_id: 110003 },
+        { id: 110004, name: '排骨+萝卜+调料+辅料  ',num:150, city_id: 110004 },
+        { id: 110005, name: '黄河鲤鱼+瘦肉+萝卜+调料  <br>黄河鲤鱼→开封鱼王<br>40破/拆招',num:100, city_id: 110005 },
+        { id: 110006, name: '雪莲花瓣+面粉+料酒+香料  <br>雪莲花瓣可以暴风雪天气采也可以买<br>概率获得酒心雪莲素',num:80, city_id: 110006 },
+        { id: 110007, name: '雪莲+甲鱼+调料+辅料   <br>雪莲只能暴风雪天气采集',num:30, city_id: 110007 },
+        { id: 110008, name: '白饼+牛肉+香料+调料   <br>白饼 食材处理需要1面粉',num:225, city_id: 110008 },
+        { id: 110009, name: '白饼+羊肉+特制饴糖+辅料 <br>白饼 食材处理需要1面粉，特制饴糖 食材处理 13个糖',num:355, city_id: 110009 },
+        { id: 120001, name: '面粉+河虾+调料+辅料  <br>河虾 淡水',num:50, city_id: 120001 },
+        { id: 120002, name: '鲫鱼+豆腐+辅料+调料  <br>鲫鱼 淡水',num:65, city_id: 120002 },
+        { id: 120003, name: '河豚+料酒+调料+辅料  <br>河豚 海水',num:75, city_id: 120003 },
+        { id: 120004, name: '鸡肉+鸭肉+糖+淀粉  <br>',num:135, city_id: 120004 },
+        { id: 120005, name: '五花肉+芋艿+调料+糖  <br>',num:115, city_id: 120005 },
+        { id: 120006, name: '羊肉+鳜鱼+调料+辅料  <br>鳜鱼 巴蜀/荆湖,概率获得羊方藏鱼',num:155, city_id: 120006 },
+        { id: 120007, name: '河鲈+料酒+辅料+调料  <br>河鲈 徐海，60破/拆招',num:75, city_id: 120007 },
+        { id: 120008, name: '鸭肉+辣椒+荷花+辅料  <br>',num:335, city_id: 120008 },
+        { id: 130001, name: '草鱼+辣椒+调料+辅料  <br>草鱼 江南以外淡水',num:75, city_id: 130001 },
+        { id: 130002, name: '豆腐+辣椒+香料+辅料  <br>',num:110, city_id: 130002 },
+        { id: 130003, name: '鸡肉+辣椒+花生+调料  <br>',num:135, city_id: 130003 },
+        { id: 130004, name: '瘦肉+豆瓣酱+辣椒+调料  <br>',num:150, city_id: 130004 },
+        { id: 130005, name: '五花肉+辣椒+豆瓣酱+调料  <br>',num:135, city_id: 130005 },
+        { id: 130006, name: '竹笋+辣椒+香料+调料  <br>竹笋 雷雨天采集',num:75, city_id: 130006 },
+        { id: 130007, name: '青鱼+豆瓣酱+辣椒+调料  <br>青鱼 巴蜀,荆湖',num:110, city_id: 130007 },
+        { id: 130008, name: '牛肉+辣椒+花生+香料  <br>',num:280, city_id: 130008 },
+        { id: 130009, name: '瘦肉+鸡蛋+秘制底料+青菜  <br>秘制底料 1豆瓣酱10香料,概率获得红泥暖锅涮菜',num:280, city_id: 130009 },
+        { id: 140001, name: '大米+河虾+鸡蛋+调料  <br>河虾 淡水,钓鱼等级+1',num:55, city_id: 140001 },
+        { id: 140002, name: '白鱼+调料+辅料+香料  <br>白鱼 江南白鱼鱼群',num:45, city_id: 140002 },
+        { id: 140003, name: '糯米+艾草+调料+香料  <br>',num:125, city_id: 140003 },
+        { id: 140004, name: '河蟹+料酒+调料+辅料  <br>河蟹 江南以外淡水',num:75, city_id: 140004 },
+        { id: 140005, name: '五花肉+糖+料酒+调料  <br>',num:100, city_id: 140005 },
+        { id: 140006, name: '甲鱼+瘦肉+调料+辅料  <br>甲鱼 江南、东越以外淡水',num:70, city_id: 140006 },
+        { id: 140007, name: '鸭肉+调料+辅料+香料  <br>',num:120, city_id: 140007 },
+        { id: 140008, name: '鳜鱼+淀粉+糖+竹笋  <br>鳜鱼 巴蜀/荆湖,竹笋 雷雨天采集',num:30, city_id: 140008 },
+        { id: 140009, name: '甲鱼+鸡肉+香菇+竹笋  <br>甲鱼 江南、东越以外淡水,竹笋 雷雨天采集',num:120, city_id: 140009 },
+        { id: 1400010, name: '面粉+大米+大豆+鲜花  <br>,概率获得云河段霄金糕',num:215, city_id: 1400010 },
+        { id: 1400011, name: '四腮鲈鱼+竹笋+调料+辅料  <br>竹笋 雷雨天采集',num:30, city_id: 1400011},
+        { id: 1400012, name: '河虾+茶叶+调料+辅料  <br> 河虾 淡水',num:195, city_id: 1400012 },
+        { id: 1400013, name: '鸡肉+茶叶+蜂蜜+香料  <br>,概率获得烤全鸡',num:265, city_id: 1400013 },//未知
+        { id: 1400014, name: '荷花+豆腐+淀粉+香料  <br>',num:265, city_id: 1400014 },
+        { id: 1400015, name: '大黄鱼+竹笋+调料+辅料  <br>竹笋 雷雨天采集，大黄鱼 海河州鱼王',num:30, city_id: 1400015 },
+        { id: 150001, name: '五花肉+辣椒+调料+辅料  <br>',num:100, city_id: 150001 },
+        { id: 150002, name: '五花肉+竹笋+鸡蛋+辣椒  <br>竹笋 雷雨天采集',num:90, city_id: 150002 },
+        { id: 150003, name: '花鲢+辣椒+豆瓣酱+调料  <br>花鲢 巴蜀、燕云、徐海、荆湖',num:110, city_id: 150003 },
+        { id: 150004, name: '鸡肉+瘦肉+香菇+料酒  <br>',num:205, city_id: 150004 },
+        { id: 150005, name: '香菇+竹笋+鸡蛋+辣椒  <br>竹笋 雷雨天采集',num:155, city_id: 150005 },
+        { id: 150006, name: '牛肉+辣椒+淀粉+辅料  <br>',num:250, city_id: 150006 },
+        { id: 150007, name: '鸡肉+荷叶+调料+辅料  <br>',num:185, city_id: 150007 },
+        { id: 150008, name: '鸭肉+糯米+荷叶+辅料  <br>',num:265, city_id: 150008 },
+        { id: 150009, name: '鲥鱼+瘦肉+料酒+辅料  <br> 鲥鱼 荆湖鱼王',num:100, city_id: 150009 },
+        { id: 160001, name: '柴胡+辅料+调料+香料  <br>',num:45, city_id: 160001 },
+        { id: 160002, name: '青菜+辅料+调料+香料  <br>',num:65, city_id: 160002 },
+        { id: 160003, name: '面粉+辅料+调料+香料  <br>',num:65, city_id: 160003 },
+        { id: 160004, name: '面粉+五花肉+辅料+调料  <br>',num:75, city_id: 160004 },
+        { id: 160005, name: '面粉+青菜+五花肉+调料  <br>',num:80, city_id: 160005 },
+        { id: 160006, name: '大米+鸡蛋+调料+辅料  <br>',num:70, city_id: 160006 },
+        { id: 160007, name: '河蟹+调料+辅料+香料  <br>',num:45, city_id: 160007 },
+        { id: 160008, name: '小龙虾+辣椒+豆瓣酱+辅料  <br>小龙虾 淡水',num:110, city_id: 160008 },
+        { id: 170001, name: '鲫鱼+料酒+糖+辅料  <br>鲫鱼 淡水',num:75, city_id: 170001 },
+        { id: 170002, name: '海参+辅料+料酒+调料  <br>',num:75, city_id: 170002 },
+        { id: 170003, name: '鸭肉+蜂蜜+调料+辅料  <br>',num:160, city_id: 170003 },
+        { id: 170004, name: '黄河鲤鱼+料酒+糖+调料  <br>',num:75, city_id: 170004 },
+        { id: 170005, name: '面粉+鲜花+蜂蜜+糖  <br>', num:240,city_id: 170005 },
+        { id: 170006, name: '羊肉+面粉+淀粉+面筋  <br>',num:460, city_id: 170006 },
+        { id: 170007, name: '面粉+牛肉+青菜+调料  <br>',num:230, city_id: 170007 },
+        { id: 170008, name: '花生+糖+特制饴糖+香料  <br>特制饴糖 食材处理 13个糖',num:270, city_id: 170007 },
+        { id: 180001, name: '鲤鱼+鲫鱼+调料+辅料  <br> 鲤鱼、鲫鱼 淡水',num:30, city_id: 180001 },
+        { id: 180002, name: '羊肉+萝卜+料酒+调料  <br>',num:230, city_id: 180002 },
+        { id: 180003, name: '鲷鱼+料酒+调料+辅料  <br>鲷鱼 海水，概率获得金齑玉脍',num:75, city_id: 180003 },
+        { id: 180004, name: '鲍鱼+海参+料酒+五花肉  <br> 鲍鱼 海水',num:70, city_id: 180004 },
+        { id: 180005, name: '鲍鱼+料酒+淀粉+调料  <br>鲍鱼 海水，钓鱼等级+3',num:75, city_id: 180005 },
+        { id: 180006, name: '鲍鱼+辣椒+料酒+辅料  <br>鲍鱼 海水',num:105, city_id: 180006 },
+        { id: 180007, name: '明玉子+调料+辅料+料酒  <br>',num:75, city_id: 180007 },
+        { id: 190001, name: '鸡肉+土豆+辣椒+调料  <br>',num:205, city_id: 190001 },
+        { id: 190002, name: '羊肉+料酒+辅料+香料  <br>',num:200, city_id: 190002 },
+        { id: 190003, name: '大米+羊肉+萝卜+调料  <br>',num:205, city_id: 190003 },
+        { id: 190004, name: '面粉+面筋+辣椒+花生  <br>面筋 食材处理 15面粉',num:410, city_id: 190004 },
+        { id: 190005, name: '羊腿肉+蜂蜜+调料+香料  <br>',num:335, city_id: 190005 },
+        { id: 190006, name: '羊肉+馕+辣椒+调料 <br>馕 食材处理9面粉 ',num:365, city_id: 190006 },
+        { id: 200001, name: '鸡肉+豆腐+调料+辅料  <br>',num:95, city_id: 200001 },
+        { id: 200002, name: '豆腐+竹笋+调料+辅料  <br>竹笋 雷雨天采集', city_id: 200002 },
+        { id: 200003, name: '五花肉+竹笋+料酒+调料  <br>竹笋 雷雨天采集',num:95, city_id: 200003 },
+        { id: 200004, name: '牛肉+调料+香料+辅料  <br>',num:220, city_id: 200004 },
+        { id: 200005, name: '见手青+辣椒+料酒+调料  <br>',num:355, city_id: 200005 },
+        { id: 200006, name: '见手青+辣椒+鸡蛋+香料  <br>',num:330, city_id: 200006 },
+        { id: 200007, name: '裸鲤、料酒、调料、辅料  <br>裸鲤 钓鱼位置待定',num:75, city_id: 200007 },
+        { id: 210001, name: '糯米+五花肉+鸡蛋+调料  <br>',num:110, city_id: 210001 },
+        { id: 210002, name: '糯米+大豆+花生+香料  <br>',num:135, city_id: 210002 },
+        { id: 210003, name: '面粉+大米+竹笋+辅料  <br>竹笋 雷雨天采集',num:55, city_id: 210003 },
+        { id: 210004, name: '排骨+芋艿+料酒+调料  <br>',num:195, city_id: 210004 },
+        { id: 210005, name: '甲鱼+豆瓣酱+调料+辅料  <br>甲鱼 江南、东越以外淡水',num:80, city_id: 210005 },
+        { id: 210006, name: '鸡肉+芋艿+辣椒+调料  <br>',num:150, city_id: 210006 },
+        { id: 210007, name: '武昌鱼+料酒+调料+辅料  <br>武昌鱼 东越鱼王圈',num:75, city_id: 210007 },
+        { id: 210008, name: '江团+大米+豆瓣酱+调料  <br>江团 东越鱼王',num:85, city_id: 210008 },
+        { id: 210009, name: '芋艿+特制饴糖+调料+辅料 <br>特制饴糖 食材处理 13糖',num:285, city_id: 210009 },
+        { id: 220001, name: '鲤鱼+调料+香料+辅料  <br>',num:45, city_id: 220001 },
+        { id: 220002, name: '五花肉+调料+香料+辅料  <br>',num:70, city_id: 220002 },
+        { id: 220003, name: '五花肉+鸡肉+调料+香料  <br>',num:85, city_id: 220003 },
+        { id: 220004, name: '鲤鱼+辣椒+料酒+调料  <br>鲤鱼 淡水',num:75, city_id: 220004 },
+        { id: 220005, name: '羊肉+辣椒+料酒+香料  <br>',num:200, city_id: 220005 },
+        { id: 220006, name: '驼峰+辣椒+料酒+调料  <br>',num:325, city_id: 220006 },
+
+
+ 
+
+
+
+    ];
+
+
+    // ===== ===== ===== 给select填充数据的操作 ===== ===== =====
+    // 填充province
+    function addDataProvince() {
+        var html = "<option value='0'>请选择菜系</option>";
+        var length = arr_province.length;
+        for (var i = 0; i < length; i++) {
+            html += "<option value='" + arr_province[i].id + "'>" + arr_province[i].name + "</option>";
+        }
+        select_province.innerHTML = html;
+    }
+
+    // 填充city
+    function addDataCity(provinceId) {
+        var html = "<option value='0'>请选择菜名</option>";
+        var length = arr_city.length;
+        for (var i = 0; i < length; i++) {
+            var obj = arr_city[i];
+            if (obj.province_id == provinceId) {
+                html += "<option value='" + obj.id + "'>" + obj.name + "</option>";
+            }
+        }
+        select_city.innerHTML = html;
+    }
+
+    // 填充county
+    function addDataCounty(cityId) {
+        var html = "请选择菜品";
+        var length = arr_county.length;
+        for (var i = 0; i < length; i++) {
+            var obj = arr_county[i];
+            if (obj.city_id == cityId) {
+                html = obj.name;
+                sum = obj.num*document.getElementById('price').value;
+            }
+        }
+        select_county.innerHTML = html;
+        select_price.innerHTML = '鱼鳞成本：'+sum+'碎银';
+    }
+
+
+    // ===== ===== ===== 给select绑定change事件 ===== ===== =====
+    // select_province绑定change事件
+    select_province.onchange = function () {
+        var provinceId = select_province.value;
+        addDataCity(provinceId);
+    };
+
+    // select_city绑定change事件
+    select_city.onchange = function () {
+        var cityId = select_city.value;
+        addDataCounty(cityId);
+    };
+
+    // select初始化数据
+    addDataProvince();
+    addDataCity(arr_province[0].id);
+    addDataCounty(arr_city[0].id);
+
+
+    /* 核心思想就是，通过监听上一级的变化获得上级的value，进而改变本级显示的列表内容。*/
+
+</script>
+
+</body>
+</html>
